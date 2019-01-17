@@ -13,7 +13,6 @@ window.users = db.collection('users');
 /**/
 function setInitialized(data) {
   console.log('setInitialized', data); // IgrEd
-
   return {
     type: INITIALIZED,
     payload: { ...data },
@@ -49,12 +48,15 @@ export const initialize = () => dispatch => {
     );
   });
 };
+
+/*
 function getUsers() {
   return db
     .collection('users')
     .get()
     .then(querySnapshot => normalizeUsersData(querySnapshot));
 }
+*/
 
 /**/
 /* set listeners */
@@ -62,15 +64,25 @@ function getUsers() {
 
 function setAuthListener(dispatch) {
   auth.onAuthStateChanged(googleUser =>
-    new Promise(resolve => (googleUser ? resolve(googleUser) : auth.signInWithPopup(provider).then(({ user }) => user)))
-      .then(googleUser => getUser(googleUser.email, googleUser))
-      .then(
-        registeredUser => ({ ...registeredUser, isRegistered: true }),
-        (googleUser = {}) => ({ name: googleUser.displayName, email: googleUser.email })
-      )
+    new Promise(
+      resolve =>
+        googleUser ? resolve(googleUser) : auth.signInWithPopup(provider).then(({ user }) => (googleUser = user))
+    )
+      .then(googleUser => getUser(googleUser.email))
+      .then(registeredUser => {
+        const user = {
+          displayName: googleUser.displayName,
+          email: googleUser.email,
+        };
+        if (registeredUser) {
+          Object.assign(user, registeredUser, { isRegistered: true });
+        }
+        return user;
+      })
       .then(user => dispatch(signInUser(user)))
   );
 }
+
 function setUsersListener(dispatch) {
   return db.collection('users').onSnapshot(function(querySnapshot) {
     const usersData = normalizeUsersData(querySnapshot);
@@ -91,13 +103,13 @@ function normalizeUsersData(querySnapshot) {
     { users: {}, usersIds: [] }
   );
 }
-function getUser(email, rollbackUser = null) {
+function getUser(email) {
   return db
     .collection('users')
     .where('email', '==', email)
     .get()
     .then(querySnapshot => {
       const userDoc = querySnapshot.docs[0];
-      return userDoc ? { ...userDoc.data(), id: userDoc.id } : Promise.reject(rollbackUser);
+      return userDoc ? { ...userDoc.data(), id: userDoc.id } : null;
     });
 }
