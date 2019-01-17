@@ -7,18 +7,18 @@ import CoffeeItem from './coffee-item'
 const Dashboard = ({users, usersIds, coffees, coffeeIds}) => (
     <div className="dashboard">
         <h2>DashBoard</h2>
-        <div className="users">
+        {users && <div className="users">
             <div className="users-balance">Users full balance {balanceCount(users)}</div>
             <ul className={'users-list'}>
                 {usersIds.map((id) => (<li key={id}><User {...users[id]}/></li>))}
             </ul>
-        </div>
-        <div className={'coffee-rest'}>
+        </div>}
+        {coffees && <div className={'coffee-rest'}>
             <div>coffee full amount {coffeeCount(coffees)}</div>
             <ul className="coffee-list">
                 {coffeeIds.map((id) => (<li key={id}><CoffeeItem {...coffees[id]}/></li>))}
             </ul>
-        </div>
+        </div>}
     </div>
 );
 export default connect(

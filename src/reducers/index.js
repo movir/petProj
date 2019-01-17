@@ -10,10 +10,19 @@ const defaultState = {
         balance: 0,
         isRegistered: false
     },
-    users: {},
+    users: null,
     usersIds: [],
-    coffees: {},
-    coffeeIds: [],
+    coffees: {
+        1: {
+            name: 'qwe',
+            amount: 3,
+        },
+        2: {
+            name: 'zxc',
+            amount: 5
+        }
+    },
+    coffeeIds: [1, 2],
     initialized: false
 };
 export default function reducer(state = defaultState, action = {}) {
