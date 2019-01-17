@@ -4,13 +4,13 @@ import {connect} from 'react-redux';
 import User from './user';
 import CoffeeItem from './coffee-item'
 
-const Dashboard = ({users, userIds, coffees, coffeeIds}) => (
+const Dashboard = ({users, usersIds, coffees, coffeeIds}) => (
     <div className="dashboard">
         <h2>DashBoard</h2>
         <div className="users">
             <div className="users-balance">Users full balance {balanceCount(users)}</div>
             <ul className={'users-list'}>
-                {userIds.map((id) => (<li key={id}><User {...users[id]}/></li>))}
+                {usersIds.map((id) => (<li key={id}><User {...users[id]}/></li>))}
             </ul>
         </div>
         <div className={'coffee-rest'}>
