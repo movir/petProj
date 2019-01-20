@@ -23,6 +23,8 @@ const defaultState = {
         }
     },
     coffeeIds: [1, 2],
+    coffeeStorage: {},
+    coffeeStorageIds: [],
     initialized: false
 };
 export default function reducer(state = defaultState, action = {}) {
