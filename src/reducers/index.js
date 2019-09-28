@@ -1,31 +1,27 @@
 import {
-    INITIALIZED, SIGN_IN,
+    INITIALIZED, COLLECTION_INITIATION,
+    SIGN_IN,
     USERS_UPDATE,
 } from '../actions/action_types';
 
 const defaultState = {
-    currentUser: {
-        name: '',
-        email: '',
-        balance: 0,
-        isRegistered: false
-    },
-    users: null,
-    usersIds: [],
-    coffees: {
-        1: {
-            name: 'qwe',
-            amount: 3,
-        },
-        2: {
-            name: 'zxc',
-            amount: 5
-        }
-    },
-    coffeeIds: [1, 2],
-    coffeeStorage: {},
-    coffeeStorageIds: [],
-    initialized: false
+  currentUser: {
+    name: '',
+    email: '',
+    balance: 0,
+    isRegistered: false,
+  },
+    
+  usersByIds: null,
+  usersIds: [],
+
+  coffeesByIds: null,
+  coffeesIds: [],
+
+  coffeeStorageByIds: null,
+  coffeeStorageIds: [],
+
+  initialized: false,
 };
 export default function reducer(state = defaultState, action = {}) {
     switch (action.type) {
@@ -33,6 +29,10 @@ export default function reducer(state = defaultState, action = {}) {
             ...state,
             ...action.payload,
             initialized: true
+        };
+        case COLLECTION_INITIATION: return {
+            ...state,
+            ...action.payload
         };
         case SIGN_IN: return {
           ...state,
